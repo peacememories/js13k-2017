@@ -1,43 +1,33 @@
 import GA from "./ga.js"
 
 import person_url from "../sprites/person.png"
+import fourKeyController from "./plugins/fourKeyController.js"
+import moveSprite from "./plugins/move.js"
+import base64image from "./plugins/base64image.js"
 
-
-function loadImage(fn, ga, name, data) {
-  const img = new Image()
-
-  img.src = data
-
-  img.addEventListener("load", () => {
-    ga.assets[name] = {
-      source: img,
-      frame: {
-        x: 0,
-        y: 0,
-        w: img.width,
-        h: img.height
-      }
-    }
-    fn()
-  })
-}
-
-let gameScene
+let gameScene, person
 
 function step() {
+  moveSprite(person)
+  const deltaX = (person.centerX+gameScene.x) - ga.canvas.width/2
+  const deltaY = (person.centerY+gameScene.y) - ga.canvas.height/2
+  gameScene.x -= deltaX
+  gameScene.y -= deltaY
 }
 
 function setup() {
   gameScene = ga.group()
-  const personSprite = ga.sprite("person.png")
-  //gameScene.addChild(personSprite)
+  person = ga.sprite("person.png")
+  fourKeyController(ga)(person, 2, 38, 39, 40, 37)
+  gameScene.addChild(person)
 
   ga.state = step
 }
 
-const ga = GA.create(320, 240, setup
-)
+const ga = GA.create(320, 240, setup)
 
-loadImage(() => {
+Promise.all([
+  base64image(ga, "person.png", person_url)
+]).then(() => {
   ga.start()
-}, ga, "person.png", person_url)
+})
