@@ -1,4 +1,4 @@
-export default function(ga) {
+export function fourKeyController(ga) {
   return function(s, speed, up, right, down, left) {
 
     //Create a `direction` property on the sprite
@@ -52,4 +52,19 @@ export default function(ga) {
       }
     };
   };
+}
+
+export function move(sprites) {
+  if (sprites instanceof Array === false) {
+    internal_move(sprites)
+  } else {
+    for (var i = 0; i < sprites.length; i++) {
+      internal_move(sprites[i])
+    }
+  }
+};
+
+function internal_move(sprite) {
+  sprite.x += sprite.vx | 0;
+  sprite.y += sprite.vy | 0;
 }

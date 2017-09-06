@@ -1,13 +1,12 @@
 import GA from "./ga.js"
 
 import person_url from "../sprites/person.png"
-import fourKeyController from "./plugins/fourKeyController.js"
-import moveSprite from "./plugins/move.js"
+import {fourKeyController, move} from "./plugins.js"
 
 let gameScene, person
 
 function step() {
-  moveSprite(person)
+  move(person)
   const deltaX = (person.centerX+gameScene.x) - ga.canvas.width/2
   const deltaY = (person.centerY+gameScene.y) - ga.canvas.height/2
   gameScene.x -= deltaX
