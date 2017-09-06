@@ -3,7 +3,6 @@ import GA from "./ga.js"
 import person_url from "../sprites/person.png"
 import fourKeyController from "./plugins/fourKeyController.js"
 import moveSprite from "./plugins/move.js"
-import base64image from "./plugins/base64image.js"
 
 let gameScene, person
 
@@ -17,17 +16,16 @@ function step() {
 
 function setup() {
   gameScene = ga.group()
-  person = ga.sprite("person.png")
+  person = ga.sprite(person_url)
   fourKeyController(ga)(person, 2, 38, 39, 40, 37)
   gameScene.addChild(person)
-
   ga.state = step
 }
 
-const ga = GA.create(320, 240, setup)
+const ga = GA.create(320, 240, setup,
+  [
+    person_url
+  ]
+)
 
-Promise.all([
-  base64image(ga, "person.png", person_url)
-]).then(() => {
-  ga.start()
-})
+ga.start()
